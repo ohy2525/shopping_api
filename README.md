@@ -6,3 +6,4 @@ mapper
 service
 serviceImpl
 junit
+mariaDB
