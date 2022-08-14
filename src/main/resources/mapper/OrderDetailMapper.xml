@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopping.shopping.mapper.OrderDetailMapper">
+
+    <insert id="insertOrderDetail" parameterType="com.shopping.shopping.domain.OrderDetail">
+
+        INSERT INTO orderDetail(orderSeq, productSeq, orderDetailCount, orderDetailPrice)
+        VALUES (#{orderSeq}, #{productSeq}, #{orderDetailCount}, #{orderDetailPrice})
+
+    </insert>
+
+    <update id="updateOrderDetailState" parameterType="com.shopping.shopping.domain.OrderDetail">
+        <selectKey keyProperty="orderDetailUpdateDate" resultType="String" order="BEFORE">
+            select now()
+        </selectKey>
+        UPDATE orderDetail
+        SET orderDetailState = #{orderDetailState}, orderDetailUpdateDate = #{orderDetailUpdateDate}
+        WHERE orderDetailSeq = #{orderDetailSeq}
+    </update>
+
+</mapper>

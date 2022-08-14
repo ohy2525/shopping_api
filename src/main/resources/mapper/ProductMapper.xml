@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopping.shopping.mapper.ProductMapper">
+
+
+    <select id="getProductList" resultType="com.shopping.shopping.domain.Product">
+        SELECT * FROM product
+    </select>
+
+    <insert id="insertProduct" parameterType="com.shopping.shopping.domain.Product">
+        INSERT INTO product(productName, productPrice, productCount)
+        VALUES(#{productName}, #{productPrice}, #{productCount})
+    </insert>
+
+    <update  id="updateProduct" parameterType="com.shopping.shopping.domain.Product">
+        <selectKey keyProperty="productUpdateDate" resultType="String" order="BEFORE">
+            select now()
+        </selectKey>
+        UPDATE product
+        SET productName = #{productName}, productPrice = #{productPrice}, productCount = #{productCount}, productDelYn = #{productDelYn}, productUpdateDate = #{productUpdateDate}
+        WHERE productSeq = #{productSeq}
+    </update>
+
+    <update id="buyProduct" parameterType="com.shopping.shopping.domain.Product">
+        <selectKey keyProperty="productUpdateDate" resultType="String" order="BEFORE">
+            select now()
+        </selectKey>
+        UPDATE product
+        SET productCount = productCount - #{productCount}, productUpdateDate = #{productUpdateDate}
+        WHERE productSeq = #{productSeq}
+    </update>
+
+    <select id="getProductCount" parameterType="com.shopping.shopping.domain.Product" resultType="String">
+        SELECT productCount FROM product WHERE productSeq = #{productSeq}
+    </select>
+
+
+    <!--<delete id="deleteProduct" parameterType="com.shopping.shopping.domain.Product">
+        DELETE FROM product WHERE productSeq=#{productSeq}
+    </delete>-->
+
+</mapper>

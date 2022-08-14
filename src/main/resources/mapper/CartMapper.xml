@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopping.shopping.mapper.CartMapper">
+
+    <select id="getCartList" resultType="com.shopping.shopping.domain.Cart">
+        SELECT * FROM cart
+    </select>
+
+    <select id="getCartListByUser" parameterType="String" resultType="com.shopping.shopping.domain.Cart">
+        SELECT * FROM cart WHERE userId = #{userId}  AND cartProductDel = 0
+    </select>
+
+    <insert id="insertCart" parameterType="com.shopping.shopping.domain.Cart">
+        INSERT INTO cart(userId, productSeq, cartProductCount)
+        VALUES(#{userId}, #{productSeq}, #{cartProductCount})
+    </insert>
+
+    <update id="updateCart" parameterType="com.shopping.shopping.domain.Cart">
+        <selectKey keyProperty="cartUpdateDate" resultType="String" order="BEFORE">
+            select now()
+        </selectKey>
+        UPDATE cart
+        SET cartProductCount = #{cartProductCount}, cartProductDel = #{cartProductDel}, cartUpdateDate = #{cartUpdateDate}
+        WHERE cartSeq = #{cartSeq}
+    </update>
+
+    <update id="completeCart" parameterType="com.shopping.shopping.domain.Cart">
+        <selectKey keyProperty="cartUpdateDate" resultType="String" order="BEFORE">
+            select now()
+        </selectKey>
+        UPDATE cart
+        SET  cartProductDel = 1, cartUpdateDate = #{cartUpdateDate}
+        WHERE cartSeq = #{cartSeq}
+    </update>
+
+</mapper>

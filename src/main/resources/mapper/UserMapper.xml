@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shopping.shopping.mapper.UserMapper">
+
+
+    <select id="getUserList" resultType="com.shopping.shopping.domain.User">
+        SELECT * FROM user
+    </select>
+
+    <select id="checkUser" parameterType="String" resultType="String">
+        SELECT userGubun FROM user WHERE userId = #{userId}
+    </select>
+
+    <insert id="insertUser" parameterType="com.shopping.shopping.domain.User">
+        INSERT INTO user(userId, userPassword, userPhone, userAddr, userGubun)
+        VALUES(#{userId}, #{userPassword}, #{userPhone}, #{userAddr}, #{userGubun})
+    </insert>
+
+    <update  id="updateUser" parameterType="com.shopping.shopping.domain.User">
+        <selectKey keyProperty="userUpdateDate" resultType="String" order="BEFORE">
+            select now()
+        </selectKey>
+        UPDATE user
+        SET userPassword = #{userPassword}, userPhone = #{userPhone}, userAddr = #{userAddr}, userUpdateDate = #{userUpdateDate}
+        WHERE userId = #{userId}
+    </update>
+
+    <delete id="deleteUser" parameterType="com.shopping.shopping.domain.User">
+        DELETE FROM user WHERE userId=#{userId}
+    </delete>
+
+    <select id="getUserById" parameterType="com.shopping.shopping.domain.User" resultType="com.shopping.shopping.domain.User">
+        SELECT * FROM user WHERE userId = #{userId}
+    </select>
+
+</mapper>
